@@ -2,15 +2,13 @@ package com.example.tipjar.paymentsHistory.viewModels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.tipjar.core.taskStatus.TaskStatus
-import com.example.tipjar.database.entities.TipHistory
 import com.example.tipjar.database.repositories.TipHistoryRepository
+import com.example.tipjar.paymentsHistory.entities.TipHistoryItem
 import com.example.tipjar.utils.TestCoroutineRule
 import com.example.tipjar.utils.providers.TestCoroutineContextProvider
 import com.jraska.livedata.TestObserver
 import com.jraska.livedata.test
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -31,7 +29,8 @@ class PaymentsHistoryViewModelTest {
     private lateinit var viewModel: PaymentsHistoryViewModel
     private lateinit var testCoroutineContextProvider: TestCoroutineContextProvider
 
-    private lateinit var testPaymentsHistoryEvent: TestObserver<TaskStatus<List<TipHistory>>>
+    private lateinit var testGetPaymentsHistoryEvent: TestObserver<TaskStatus<List<TipHistoryItem>>>
+    private lateinit var testDeletePaymentEvent: TestObserver<TaskStatus<Int>>
 
     @Before
     fun setUp() {
@@ -41,7 +40,8 @@ class PaymentsHistoryViewModelTest {
             testCoroutineContextProvider,
             tipHistoryRepository
         ).apply {
-            testPaymentsHistoryEvent = paymentsHistoryEvent.test()
+            testGetPaymentsHistoryEvent = getPaymentsHistoryEvent.test()
+            testDeletePaymentEvent = deletePaymentEvent.test()
         }
     }
 
@@ -52,6 +52,19 @@ class PaymentsHistoryViewModelTest {
         coVerify {
             tipHistoryRepository.findAllSortByDate()
         }
-        testPaymentsHistoryEvent.assertValue(TaskStatus.success(listOf()))
+        testGetPaymentsHistoryEvent.assertValue(TaskStatus.success(listOf()))
+    }
+
+    @Test
+    fun `deletePayment()`() = testCoroutineRule.runBlockingTest {
+        coEvery { tipHistoryRepository.delete(listOf()) } just Runs
+        coEvery { tipHistoryRepository.findAllSortByDate() } returns listOf()
+        viewModel.deletePayment(listOf())
+        coVerifyOrder {
+            tipHistoryRepository.delete(listOf())
+            tipHistoryRepository.findAllSortByDate()
+        }
+        testGetPaymentsHistoryEvent.assertValue(TaskStatus.success(listOf()))
+        testDeletePaymentEvent.assertValue(TaskStatus.success(0))
     }
 }
