@@ -15,19 +15,19 @@ class PaymentDetailsViewModel @Inject constructor(
     private val tipHistoryRepository: TipHistoryRepository
 ) : ViewModel() {
 
-    val tipHistoryEvent = SingleLiveEvent<TaskStatus<TipHistory>>()
+    val paymentEvent = SingleLiveEvent<TaskStatus<TipHistory>>()
 
-    fun getTipHistoryById(id: Int) {
+    fun getPaymentById(id: Int) {
         viewModelScope.launch(
             coroutineContextProvider = coroutineContextProvider,
             work = {
                 tipHistoryRepository.find(id)
             },
             onSuccess = {
-                tipHistoryEvent.value = TaskStatus.success(it!!)
+                paymentEvent.value = TaskStatus.success(it!!)
             },
             onFailure = {
-                tipHistoryEvent.value = TaskStatus.error(it)
+                paymentEvent.value = TaskStatus.error(it)
             }
         )
     }

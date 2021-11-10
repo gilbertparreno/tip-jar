@@ -33,11 +33,11 @@ class PaymentDetailsFragment :
     }
 
     override fun onViewCreated(contentView: PaymentDetailsView, savedInstanceState: Bundle?) {
-        viewModel.getTipHistoryById(tipHistoryId)
+        viewModel.getPaymentById(tipHistoryId)
     }
 
     override fun observerChanges() {
-        viewModel.tipHistoryEvent.observe(this) {
+        viewModel.paymentEvent.observe(this) {
             when (it) {
                 is TaskStatus.SuccessWithResult -> contentView.setUpView(it.result)
                 is TaskStatus.Failure -> {

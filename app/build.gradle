@@ -72,4 +72,11 @@ dependencies {
 
     implementation 'com.evernote:android-state:1.4.1'
     kapt 'com.evernote:android-state-processor:1.4.1'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'io.mockk:mockk:1.10.6'
+    testImplementation 'com.jraska.livedata:testing-ktx:1.1.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
+    testImplementation 'org.mockito:mockito-core:3.5.13'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 }

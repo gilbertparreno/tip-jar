@@ -41,10 +41,13 @@ class PaymentsHistoryViewModel @Inject constructor(
             coroutineContextProvider = coroutineContextProvider,
             work = {
                 tipHistoryRepository.delete(ids.toList())
+                tipHistoryRepository.findAllSortByDate().map {
+                    TipHistoryItem(tipHistory = it)
+                }
             },
             onSuccess = {
                 deletePaymentEvent.value = TaskStatus.success(ids.count())
-                getPaymentsHistory()
+                getPaymentsHistoryEvent.value = TaskStatus.success(it)
             },
             onFailure = {
                 deletePaymentEvent.value = TaskStatus.error(it)
