@@ -7,6 +7,8 @@ import com.example.tipjar.core.extensions.livedata.SingleLiveEvent
 import com.example.tipjar.core.providers.CoroutineContextProvider
 import com.example.tipjar.core.taskStatus.TaskStatus
 import com.example.tipjar.database.repositories.TipHistoryRepository
+import com.example.tipjar.paymentsHistory.entities.OrderType
+import com.example.tipjar.paymentsHistory.entities.OrderType.*
 import com.example.tipjar.paymentsHistory.entities.TipHistoryItem
 import kotlinx.coroutines.GlobalScope
 import javax.inject.Inject
@@ -19,11 +21,14 @@ class PaymentsHistoryViewModel @Inject constructor(
     val getPaymentsHistoryEvent = SingleLiveEvent<TaskStatus<List<TipHistoryItem>>>()
     val deletePaymentEvent = SingleLiveEvent<TaskStatus<Int>>()
 
-    fun getPaymentsHistory() {
+    fun getPaymentsHistory(orderType: OrderType) {
         viewModelScope.launch(
             coroutineContextProvider = coroutineContextProvider,
             work = {
-                tipHistoryRepository.findAllSortByDate().map {
+                tipHistoryRepository.findAll(
+                    orderType.orderBy.value,
+                    if (orderType is Descending) "desc" else "asc"
+                ).map {
                     TipHistoryItem(tipHistory = it)
                 }
             },
@@ -36,12 +41,18 @@ class PaymentsHistoryViewModel @Inject constructor(
         )
     }
 
-    fun deletePayment(ids: List<Int>) {
+    fun deletePayment(
+        ids: List<Int>,
+        orderType: OrderType
+    ) {
         GlobalScope.launch(
             coroutineContextProvider = coroutineContextProvider,
             work = {
                 tipHistoryRepository.delete(ids.toList())
-                tipHistoryRepository.findAllSortByDate().map {
+                tipHistoryRepository.findAll(
+                    orderType.orderBy.value,
+                    if (orderType is Descending) "desc" else "asc"
+                ).map {
                     TipHistoryItem(tipHistory = it)
                 }
             },

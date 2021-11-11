@@ -3,6 +3,8 @@ package com.example.tipjar.paymentsHistory.viewModels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.tipjar.core.taskStatus.TaskStatus
 import com.example.tipjar.database.repositories.TipHistoryRepository
+import com.example.tipjar.paymentsHistory.entities.OrderBy
+import com.example.tipjar.paymentsHistory.entities.OrderType
 import com.example.tipjar.paymentsHistory.entities.TipHistoryItem
 import com.example.tipjar.utils.TestCoroutineRule
 import com.example.tipjar.utils.providers.TestCoroutineContextProvider
@@ -47,22 +49,24 @@ class PaymentsHistoryViewModelTest {
 
     @Test
     fun `getPaymentsHistory()`() = testCoroutineRule.runBlockingTest {
-        coEvery { tipHistoryRepository.findAllSortByDate() } returns listOf()
-        viewModel.getPaymentsHistory()
+        val testData = OrderType.Descending(OrderBy.DATE)
+        coEvery { tipHistoryRepository.findAll("payment_date", "desc") } returns listOf()
+        viewModel.getPaymentsHistory(testData)
         coVerify {
-            tipHistoryRepository.findAllSortByDate()
+            tipHistoryRepository.findAll("payment_date", "desc")
         }
         testGetPaymentsHistoryEvent.assertValue(TaskStatus.success(listOf()))
     }
 
     @Test
     fun `deletePayment()`() = testCoroutineRule.runBlockingTest {
+        val testData = OrderType.Descending(OrderBy.DATE)
         coEvery { tipHistoryRepository.delete(listOf()) } just Runs
-        coEvery { tipHistoryRepository.findAllSortByDate() } returns listOf()
-        viewModel.deletePayment(listOf())
+        coEvery { tipHistoryRepository.findAll("payment_date", "desc") } returns listOf()
+        viewModel.deletePayment(listOf(), testData)
         coVerifyOrder {
             tipHistoryRepository.delete(listOf())
-            tipHistoryRepository.findAllSortByDate()
+            tipHistoryRepository.findAll("payment_date", "desc")
         }
         testGetPaymentsHistoryEvent.assertValue(TaskStatus.success(listOf()))
         testDeletePaymentEvent.assertValue(TaskStatus.success(0))

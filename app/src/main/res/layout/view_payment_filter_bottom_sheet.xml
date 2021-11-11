@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/numberOfPeopleTitle"
+        style="@style/MediumTextStyle.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/sort_by" />
+
+    <RadioGroup
+        android:id="@+id/sortBy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/dateAscending"
+            style="@style/RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/ripple_default"
+            android:text="@string/sort_date_ascending" />
+
+        <RadioButton
+            android:id="@+id/dateDescending"
+            style="@style/RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/ripple_default"
+            android:text="@string/sort_date_descending" />
+
+        <RadioButton
+            android:id="@+id/paymentAscending"
+            style="@style/RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/ripple_default"
+            android:text="@string/sort_payment_amount_ascending" />
+
+        <RadioButton
+            android:id="@+id/paymentDescending"
+            style="@style/RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/ripple_default"
+            android:text="@string/sort_payment_amount_descending" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/updateFilter"
+        style="@style/MainPrimaryButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/update_filter" />
+
+</LinearLayout>
