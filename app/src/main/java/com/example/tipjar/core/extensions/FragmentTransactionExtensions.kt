@@ -11,7 +11,7 @@ fun FragmentTransaction.addFragmentHorizontally(
     @IdRes containerId: Int,
     fragmentClass: Class<out Fragment>,
     bundle: Bundle? = null,
-    tag: String? = fragmentClass.simpleName.toLowerCase(Locale.US),
+    tag: String? = fragmentClass.simpleName.lowercase(),
     addToBackStack: Boolean = true
 ): FragmentTransaction {
     return addFragment(
@@ -28,7 +28,7 @@ fun FragmentTransaction.addFragmentVertically(
     @IdRes containerId: Int,
     fragmentClass: Class<out Fragment>,
     bundle: Bundle? = null,
-    tag: String? = fragmentClass.simpleName.toLowerCase(Locale.US),
+    tag: String? = fragmentClass.simpleName.lowercase(),
     addToBackStack: Boolean = true
 ): FragmentTransaction {
     return addFragment(
@@ -46,7 +46,7 @@ fun FragmentTransaction.replaceFragment(
     @IdRes containerId: Int,
     fragmentClass: Class<out Fragment>,
     bundle: Bundle? = null,
-    tag: String? = fragmentClass.simpleName.toLowerCase(Locale.US),
+    tag: String? = fragmentClass.simpleName.lowercase(),
     addToBackStack: Boolean = true
 ): FragmentTransaction {
     if (addToBackStack) {
@@ -65,7 +65,7 @@ private fun addFragment(
     @IdRes containerId: Int,
     fragmentClass: Class<out Fragment>,
     bundle: Bundle? = null,
-    tag: String? = fragmentClass.simpleName.toLowerCase(Locale.US),
+    tag: String? = fragmentClass.simpleName.lowercase(),
     addToBackStack: Boolean = true,
     isHorizontal: Boolean = true
 ): FragmentTransaction {

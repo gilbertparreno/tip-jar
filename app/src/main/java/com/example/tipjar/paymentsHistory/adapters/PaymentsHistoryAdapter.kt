@@ -63,7 +63,7 @@ class PaymentsHistoryAdapter(
                     } else {
                         when {
                             openedItem?.get() != null -> findOpenedItemsAndClose()
-                            swipeContainer.isOpened -> swipeContainer.close(true)
+                            this@with.swipeContainer.isOpened -> this@with.swipeContainer.close(true)
                             else -> onItemSelected?.invoke(tipHistory)
                         }
                     }

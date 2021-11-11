@@ -13,6 +13,7 @@ interface PaymentsHistoryViewDelegate {
     fun onViewBackPressed()
     fun onItemSelected(tipHistory: TipHistory)
     fun onItemDelete(vararg ids: Int)
+    fun onShowFilter()
 }
 
 class PaymentsHistoryView(context: Context) : BaseFragmentView(context) {
@@ -25,6 +26,7 @@ class PaymentsHistoryView(context: Context) : BaseFragmentView(context) {
         }, onItemDelete = { id ->
             delegate?.onItemDelete(id)
         }, onShowDeleteMenu = {
+            toolbar.menu.clear()
             toolbar.inflateMenu(R.menu.menu_payment_history)
             toolbar.isTitleCentered = false
         }
@@ -33,6 +35,7 @@ class PaymentsHistoryView(context: Context) : BaseFragmentView(context) {
     init {
         inflate(context, R.layout.view_payments_history, this)
         paymentsHistoryList.adapter = adapter
+        toolbar.inflateMenu(R.menu.menu_filter)
 
         toolbar.apply {
             setNavigationIcon(R.drawable.ic_toolbar_back)
@@ -48,14 +51,19 @@ class PaymentsHistoryView(context: Context) : BaseFragmentView(context) {
                         delegate?.onItemDelete(*idsToDelete)
                         menu.clear()
                         toolbar.isTitleCentered = true
+                        toolbar.inflateMenu(R.menu.menu_filter)
                     }
                     R.id.menu_cancel -> {
                         setListItems(adapter.items.map { it.copy(isSelectable = false) })
                         menu.clear()
                         toolbar.isTitleCentered = true
+                        toolbar.inflateMenu(R.menu.menu_filter)
                     }
                     R.id.menu_select_all -> {
                         setListItems(adapter.items.map { it.copy(isSelected = true) })
+                    }
+                    R.id.menu_filter -> {
+                        delegate?.onShowFilter()
                     }
                 }
                 return@setOnMenuItemClickListener true
