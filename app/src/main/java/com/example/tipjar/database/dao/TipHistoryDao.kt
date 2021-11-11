@@ -14,7 +14,7 @@ interface TipHistoryDao : BaseRoomDao<TipHistory> {
     @Query("SELECT * FROM tip_history WHERE id = :id")
     suspend fun find(id: Int): TipHistory?
 
-    @Query("SELECT * FROM tip_history ORDER BY CASE WHEN :columnName = 'payment_amount' AND :order ='asc' THEN payment END ASC, CASE WHEN :columnName = 'payment_amount' AND :order ='desc' THEN payment END DESC, CASE WHEN :columnName = 'date' AND :order ='asc' THEN payment_date END ASC, CASE WHEN :columnName = 'date' AND :order ='desc' THEN payment_date END DESC")
+    @Query("SELECT * FROM tip_history ORDER BY CASE WHEN :columnName = 'payment' AND :order ='asc' THEN payment END ASC, CASE WHEN :columnName = 'payment' AND :order ='desc' THEN payment END DESC, CASE WHEN :columnName = 'payment_date' AND :order ='asc' THEN payment_date END ASC, CASE WHEN :columnName = 'payment_date' AND :order ='desc' THEN payment_date END DESC")
     suspend fun findAll(columnName: String, order: String): List<TipHistory>
 
     @Query("DELETE FROM tip_history WHERE id in (:ids)")
