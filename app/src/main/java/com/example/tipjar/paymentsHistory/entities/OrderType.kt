@@ -1,6 +1,6 @@
 package com.example.tipjar.paymentsHistory.entities
 
-sealed class OrderType(val orderBy: OrderBy) {
-    data class Ascending(val order: OrderBy) : OrderType(order)
-    data class Descending(val order: OrderBy) : OrderType(order)
+sealed class OrderType(open val orderBy: OrderBy) {
+    data class Ascending(override val orderBy: OrderBy) : OrderType(orderBy)
+    data class Descending(override val orderBy: OrderBy) : OrderType(orderBy)
 }
